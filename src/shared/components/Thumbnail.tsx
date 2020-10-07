@@ -18,7 +18,7 @@ export const Thumbnail: React.FC<ButtonProps> = ({
     
 }) => {
     return (
-        <ThumbnailButton style={{ elevation: 1,}}>
+        <ThumbnailButton>
             <Img source={{ uri: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=400&w=400' }}
                 resizeMode='cover' />
         </ThumbnailButton>
@@ -38,7 +38,7 @@ const ThumbnailButton = styled.TouchableOpacity<StyleProps>`
     width: 120px;
     height: 120px;
     align-self: center;
-    box-shadow: 5px 5px 5px ${colors.blackLigth};
+    box-shadow: 3px 3px 2px ${colors.blackTransparentLight};
 `
 const Img = styled.Image<StyleProps>`
     width: 120px;
