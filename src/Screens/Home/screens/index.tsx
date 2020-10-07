@@ -16,7 +16,7 @@ export const HomeScreen = ({ route: {params}, navigation }) => {
                 <Label style={{ color: 'red' }}>Codigo: </Label>
                 <Label>{codigo}</Label>
             </View>
-            <Button onPress={() => navigation.goBack()}>
+            <Button onPress={() => navigation.replace('Login')}>
                 <ButtonText>Regresar</ButtonText>
             </Button>
         </Container>
