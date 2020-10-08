@@ -8,8 +8,8 @@ import { Button } from '../../../shared/components';
 
 export const LoginScreen = ({ navigation }) => {
     const [state, setState] = useState({
-        codigo: '214804641',
-        nip: 'virtualnba7',
+        codigo: '',
+        nip: '',
         status: false,
     })
     const [loading, setLoading] = useState(false);
