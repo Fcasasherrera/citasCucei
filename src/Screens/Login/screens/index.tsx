@@ -13,6 +13,7 @@ export const LoginScreen = ({ navigation }) => {
         status: false,
     })
     const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         if (state.codigo !== '' && state.nip !== '') {
             setState({ ...state, status: true });

@@ -1,6 +1,4 @@
 import React, { Suspense } from 'react';
-import { StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { HomeScreen } from '../screens/index';
 
