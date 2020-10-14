@@ -1,24 +1,64 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import styled from 'styled-components/native';
+import { insertCite } from '../../../shared/Api/index';
 import CalendarPicker from 'react-native-calendar-picker';
 import { Picker } from '@react-native-community/picker';
 import { colors } from '../../../shared/styles';
+import { Button } from '../../../shared/components';
+import { timeNumbers } from '../../../shared/styles'
+import Toast from 'react-native-simple-toast';
+export const HomeScreen = ({ route: { params }, navigation }) => {
+    const { name, codigo, carrera } = params;
+    const { HOURSMILITAR, MINUTES } = timeNumbers;
 
-export const HomeScreen = ({ route: {params}, navigation }) => {
-    const { name, codigo } = params;
-    const [ state, setState ] = useState({
+    const [state, setState] = useState({
         selectedStartDate: '',
-        hours: '8',
+        hours: '08',
         minutes: '00',
-        type: 'am'
+        type: 'am',
+        status: false,
     })
     const onChangeDate = (date) => {
         setState({ ...state, selectedStartDate: date.toString() })
     }
-    const generateCite = () => {
-        console.log(state.hours, ':', state.minutes, ' ', state.type, ' ',  state.selectedStartDate);
+    const generateCite = async () => {
+        setLoading(true);
+        let data = { 
+            dayWeek: state.selectedStartDate.split(' ')[0], 
+            month: state.selectedStartDate.split(' ')[1], 
+            day: state.selectedStartDate.split(' ')[2], 
+            //hour: state.hours + ':' + state.minutes + ' ' + state.type,  //with am or pm
+            hour: state.hours + ':' + state.minutes,
+            code: codigo, 
+            name, 
+            carreer: carrera 
+        }
+        let response = {}
+        try {
+            response = await insertCite(data)
+        } catch (error) {
+            Toast.show('Error al generar la cita', Toast.SHORT);
+            setLoading(false)
+        }
+        if (response === 'err') {
+            Toast.show('Error al generar la cita', Toast.SHORT);
+            setLoading(false)
+        } else {
+            setLoading(false)
+            Toast.show('La cita se registro correctamente', Toast.SHORT);
+        }
+        setLoading(false);
     }
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (state.selectedStartDate !== '') {
+            setState({ ...state, status: true });
+        } else {
+            setState({ ...state, status: false });
+        }
+    }, [state.selectedStartDate, state.hours, state.minutes, state.type]);
 
     const { Item } = Picker;
 
@@ -28,47 +68,48 @@ export const HomeScreen = ({ route: {params}, navigation }) => {
                 onDateChange={(data) => onChangeDate(data)}
                 previousTitle="<"
                 nextTitle=">"
+                selectedDayColor={colors.pink}
                 todayBackgroundColor={colors.primary}
             />
-            <View  style={{flexDirection: "row", marginTop: 20,}} >
-                <Label style={{ color: 'red' }}>Fecha seleccionada:</Label> 
-                <Label>{state.selectedStartDate}</Label>
-            </View>
             <View style={{ flexDirection: "row", marginTop: 20, }} >
+                
                 <Picker
                     selectedValue={state.hours}
                     style={{ flex: 1, }}
-                    onValueChange={(itemValue:any, itemIndex) =>
+                    onValueChange={(itemValue: any) =>
                         setState({ ...state, hours: itemValue })
                     }>
-                    <Item label="8" value="8" />
-                    <Item label="9" value="9" />
+                    {HOURSMILITAR.map((value, index) => {
+                        return (
+                            <Item key={index} label={value.toString()} value={value.toString()} />
+                        )
+                    })}
                 </Picker>
                 <Picker
                     selectedValue={state.minutes}
                     style={{ flex: 1, }}
-                    onValueChange={(itemValue: any, itemIndex) =>
+                    onValueChange={(itemValue: any) =>
                         setState({ ...state, minutes: itemValue })
                     }>
-                    <Item label="00" value="00" />
-                    <Item label="15" value="15" />
+                    {MINUTES.map((value, index) => {
+                        return (
+                            <Item key={index} label={value} value={value} />
+                        )
+                    })}
                 </Picker>
-                <Picker
+                {/* <Picker
                     selectedValue={state.type}
                     style={{ flex: 1, }}
-                    onValueChange={(itemValue: any, itemIndex) =>
+                    onValueChange={(itemValue: any) =>
                         setState({ ...state, type: itemValue })
                     }>
                     <Item label="am" value="am" />
                     <Item label="pm" value="pm" />
-                </Picker>
+                </Picker> */}
             </View>
-            <Button onPress={() => generateCite()}>
-                <ButtonText>Generar Cita</ButtonText>
+            <Button isLoading={loading} isActivated={state.status} onClick={generateCite}>
+                Generar Cita
             </Button>
-            {/* <Button onPress={() => navigation.replace('Login')}>
-                <ButtonText>Regresar</ButtonText>
-            </Button> */}
         </Container>
     );
 };
@@ -79,22 +120,4 @@ const Container = styled.View`
     height: 100%;
     padding-right: 20px;
     padding-left: 20px;
-`
-const Label = styled.Text`
-    color: #000;
-`
-const Button = styled.TouchableOpacity`
-    background-color: pink;
-    height: 40px;
-    width: 100%;
-    border-radius: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-    justify-content: center;
-`
-const ButtonText = styled.Text`
-    color: #fff;
-    margin-top: 5px;
-    margin-bottom: 5px;
 `
