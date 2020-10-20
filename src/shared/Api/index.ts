@@ -29,8 +29,11 @@ export const insertCite = ({ dayWeek, month, day, hour, code, name, carreer }) =
             .then(res => {
                 if (res.data === 0) {
                     resolve('err');
+                } else if (res.data === 2) {
+                    resolve('ya existe la cita');
+                } else {
+                    resolve(res.data)
                 }
-                resolve(res.data)
             })
             .catch(err => {
                 reject(err)

@@ -44,7 +44,11 @@ export const HomeScreen = ({ route: { params }, navigation }) => {
         if (response === 'err') {
             Toast.show('Error al generar la cita', Toast.SHORT);
             setLoading(false)
-        } else {
+        } else if (response === 'ya existe la cita') {
+            Toast.show('La cita ya existe', Toast.SHORT);
+            setLoading(false)
+        }
+        else {
             setLoading(false)
             Toast.show('La cita se registro correctamente', Toast.SHORT);
         }
