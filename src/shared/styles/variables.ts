@@ -3,7 +3,7 @@ export const colors = {
   primary: '#64b5f6', /* color principal */
   primaryLigth: '#434242', /* color secundario */
   primaryDark: '#2330d7',
-  accent: '#00CC00',
+  accent: '#af4448',
   accentLight: '#c9f4c9',  /* color secundario -Seed */
   white: '#ffffff',
   whiteDark: '#ebe8e8',
