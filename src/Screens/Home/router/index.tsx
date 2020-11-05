@@ -9,9 +9,9 @@ import CustomDrawer from '../components/CustomDrawer'
 
 const Router = ({ route: { params } }) => {
     return (
-        <Navigator initialRouteName="Home" drawerContent={props => <CustomDrawer {...props} params={params} />}>
-            <Screen name="Home" component={HomeScreen} initialParams={params}/>
-            <Screen name="Down" component={DownScreen} initialParams={params} />
+        <Navigator initialRouteName="Inicio" drawerContent={props => <CustomDrawer {...props} params={params} />}>
+            <Screen name="Inicio" component={HomeScreen} initialParams={params}/>
+            <Screen name="Bajas" component={DownScreen} initialParams={params} />
         </Navigator>
     );
 };

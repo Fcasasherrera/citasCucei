@@ -15,7 +15,7 @@ const Router = () => {
         <NavigationContainer>
             <Navigator mode="card">
                 <Screen name="Login" component={LoginScreen}/>
-                <Screen name="User" component={HomeRouter} />
+                <Screen name="Inicio" component={HomeRouter} />
             </Navigator>
         </NavigationContainer>
     );

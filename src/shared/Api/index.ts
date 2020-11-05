@@ -1,6 +1,6 @@
 import axios from 'axios';
 let url = 'https://cuceimobile.tech/Escuela/datosudeg.php'
-let urlLocal = 'https://proyectoreactprogramacionweb.000webhostapp.com/altaCitas.php'
+let urlLocal = 'https://proyectoreactprogramacionweb.000webhostapp.com/'
 
 export const loginUDG = ({codigo, nip}) => {
     url += `?codigo=${codigo}&nip=${nip}`
@@ -23,8 +23,8 @@ export const loginUDG = ({codigo, nip}) => {
     })
 }
 export const insertCite = ({ dayWeek, month, day, hour, code, name, carreer }) => {
-    urlLocal += `?diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}&codigo=${code}&nombre=${name}&carrera=${carreer}`
-    return new Promise<>((resolve, reject) => {
+    urlLocal += `altaCitas.php?diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}&codigo=${code}&nombre=${name}&carrera=${carreer}`
+    return new Promise<String>((resolve, reject) => {
         axios.get(urlLocal)
             .then(res => {
                 if (res.data === 0) {
@@ -34,6 +34,18 @@ export const insertCite = ({ dayWeek, month, day, hour, code, name, carreer }) =
                 } else {
                     resolve(res.data)
                 }
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+export const getCitesCode = (code) => {
+    urlLocal = `https://proyectoreactprogramacionweb.000webhostapp.com/verCitas.php?codigo=${code}`
+    return new Promise<[]>((resolve, reject) => {
+        axios.get(urlLocal)
+            .then(res => {
+                resolve(res.data);
             })
             .catch(err => {
                 reject(err)

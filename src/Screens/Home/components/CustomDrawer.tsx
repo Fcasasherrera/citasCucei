@@ -15,17 +15,18 @@ interface CustomDrawerProps {
 
 const CustomDrawer = (props: CustomDrawerProps) => {
     const navigation = useNavigation()
-    const { name, codigo } = props.params;
+    const { name, codigo, carrera } = props.params;
     return (
         <>
             <Container>
                 <Thumbnail onClick={() => { }} width={'40px'} />
                 <Label>{name}</Label>
                 <Label>{codigo}</Label>
+                <Label style={{textTransform: 'uppercase'}}>{carrera}</Label>
                 <DrawerContentScrollView {...props}>
                     <DrawerItemList {...props} />
                     <DrawerItem
-                        label="Help"
+                        label="Ayuda"
                         onPress={() => Linking.openURL('https://github.com/Fcasasherrera')}
                     />
                     <DrawerItem
