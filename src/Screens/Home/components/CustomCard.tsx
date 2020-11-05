@@ -19,8 +19,15 @@ export const CustomCard: React.FC<CustomCardProps> = ({ params: { index, item } 
     const deleteAny = async () => {
         let response = []
         setLoading(true)
+        let data = {
+            month: item.Mes,
+            day: item.Dia,
+            hour: item.Hora,
+            code: item.Codigo,
+        }
+        
         try {
-            response = await deleteCite(/*aqui ponle los params */);
+            response = await deleteCite(data);
         } catch (error) {
             Toast.show('Error al ejecutar la peticion', Toast.SHORT);
             setLoading(false)
