@@ -1,8 +1,6 @@
 import axios from 'axios';
 let url = 'https://cuceimobile.tech/Escuela/datosudeg.php'
 let urlLocal = 'https://proyectoreactprogramacionweb.000webhostapp.com/'
-let urlMarcos = 'https://servidordepruebaparalatarea.000webhostapp.com/'
-
 
 export const loginUDG = ({codigo, nip}) => {
     url += `?codigo=${codigo}&nip=${nip}`
@@ -24,11 +22,10 @@ export const loginUDG = ({codigo, nip}) => {
             })
     })
 }
-// servidordepruebaparalatarea.000webhostapp.com/AltaCitas.php?diasemana=Wed&mes=Oct&dia=18&hora=21:00&codigo=214804641&nombre=FERNANDO&carrera=INNI
 export const insertCite = ({ dayWeek, month, day, hour, code, name, carreer }) => {
-    urlMarcos += `AltaCitas.php?diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}&codigo=${code}&nombre=${name}&carrera=${carreer}`
+    urlLocal = `https://proyectoreactprogramacionweb.000webhostapp.com/altaCitas.php?diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}&codigo=${code}&nombre=${name}&carrera=${carreer}`
     return new Promise<String>((resolve, reject) => {
-        axios.get(urlMarcos)
+        axios.get(urlLocal)
             .then(res => {
                 console.log(res.data);
                 

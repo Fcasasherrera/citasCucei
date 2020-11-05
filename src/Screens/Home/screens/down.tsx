@@ -17,6 +17,7 @@ export const DownScreen = ({ route: { params }, navigation }) => {
 
     const initial = async () => {
         let response = []
+        setLoading(true)
         try {
             response = await getCitesCode(codigo);
         } catch (error) {
@@ -34,11 +35,16 @@ export const DownScreen = ({ route: { params }, navigation }) => {
     useEffect(() => {
         initial()
     }, []);
+    const onRefresh = () => {
+        initial();
+    }
 
     return (
         <Container>
             {state.data.length > 0 ? 
                 <FlatList
+                    refreshing={loading}
+                    onRefresh={onRefresh}
                     data={state.data}
                     renderItem={(data) => {
                         return (
