@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
 import { colors } from '../../../shared/styles';
 import { Button } from '../../../shared/components';
 import Toast from 'react-native-simple-toast';
+import { deleteCite } from '../../../shared/Api/index';
+
 
 type CustomCardProps = {
     params,
@@ -11,7 +13,24 @@ type CustomCardProps = {
 }
 
 export const CustomCard: React.FC<CustomCardProps> = ({ params: { index, item } }, status) => {
+
+    const [loading, setLoading] = useState(false);
     
+    const deleteAny = async () => {
+        let response = []
+        setLoading(true)
+        try {
+            response = await deleteCite(/*aqui ponle los params */);
+        } catch (error) {
+            Toast.show('Error al ejecutar la peticion', Toast.SHORT);
+            setLoading(false)
+        }
+        if (response.length === 0) {
+            setLoading(false)
+        } else {
+            setLoading(false)
+        }
+    }
 
     return (
         <ContainerItem key={index}>
@@ -29,9 +48,7 @@ export const CustomCard: React.FC<CustomCardProps> = ({ params: { index, item } 
             </Row>
 
             <View style={{ alignSelf: "flex-end" }}>
-                <Button isLoading={false} accent={true} width={'100px'} isActivated={status} onClick={() => {
-                    Toast.show('hey este es el componente de bajas', Toast.SHORT);
-                }}>
+                <Button isLoading={loading} accent={true} width={'100px'} isActivated={status} onClick={deleteAny}>
                     Borrar
                 </Button>
             </View>
