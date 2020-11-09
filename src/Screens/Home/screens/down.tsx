@@ -48,17 +48,28 @@ export const DownScreen = ({ route: { params }, navigation }) => {
                     data={state.data}
                     renderItem={(data) => {
                         return (
-                            <CustomCard params={data} status={state.status} />
+                            <CustomCard params={data} status={state.status} reloadList={() => {initial()}} />
                         )
                     }}
                     keyExtractor={(item, index) => { return index.toString()}}
                 />
             :
-                <Row style={{marginTop: 15}}>
-                    <Label>
-                        No se encontraron citas registradas
-                    </Label>
-                </Row>
+                <FlatList
+                    refreshing={loading}
+                    onRefresh={onRefresh}
+                    data={[1]}
+                    renderItem={(data) => {
+                        return (
+                            <Row style={{ marginTop: 15, justifyContent: 'center', backgroundColor: 'white', padding: 25, borderRadius: 16, }}>
+                                <Label style={{textAlign: 'center'}}>
+                                    No se encontraron citas registradas
+                                </Label>
+                            </Row>
+                        )
+                    }}
+                    keyExtractor={(item, index) => { return index.toString()}}
+                />
+                
             }
         </Container>
     );

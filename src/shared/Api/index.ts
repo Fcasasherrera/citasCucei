@@ -56,3 +56,15 @@ export const getCitesCode = (code) => {
             })
     })
 }
+export const deleteCite = ({ month, day, hour, code,}) => {
+    const endpoint = `bajasCitas.php?month=${month}&day=${day}&hour=${hour}&code=${code}`
+    return new Promise<[]>((resolve, reject) => {
+        axios.get(urlLocal + endpoint)
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}

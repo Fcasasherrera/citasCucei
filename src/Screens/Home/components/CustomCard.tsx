@@ -9,11 +9,13 @@ import { deleteCite } from '../../../shared/Api/index';
 
 type CustomCardProps = {
     params,
-    status: boolean
+    reloadList: any;
+    status: boolean,
 }
 
-export const CustomCard: React.FC<CustomCardProps> = ({ params: { index, item } }, status) => {
-
+export const CustomCard: React.FC<CustomCardProps> = (
+    { params: { index, item }, reloadList }, 
+) => { 
     const [loading, setLoading] = useState(false);
     
     const deleteAny = async () => {
@@ -35,6 +37,7 @@ export const CustomCard: React.FC<CustomCardProps> = ({ params: { index, item } 
         if (response.length === 0) {
             setLoading(false)
         } else {
+            reloadList()
             setLoading(false)
         }
     }
@@ -55,7 +58,7 @@ export const CustomCard: React.FC<CustomCardProps> = ({ params: { index, item } 
             </Row>
 
             <View style={{ alignSelf: "flex-end" }}>
-                <Button isLoading={loading} accent={true} width={'100px'} isActivated={status} onClick={deleteAny}>
+                <Button isLoading={loading} accent={true} width={'100px'} isActivated={true} onClick={deleteAny}>
                     Borrar
                 </Button>
             </View>
