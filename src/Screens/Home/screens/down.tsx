@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Modal } from 'react-native';
 import styled from 'styled-components/native';
 import { getCitesCode } from '../../../shared/Api/index';
-import { timeNumbers } from '../../../shared/styles';
+import { timeNumbers, colors } from '../../../shared/styles';
 import Toast from 'react-native-simple-toast';
 import { CustomCard } from '../components/CustomCard';
+import { EditorContent } from '../components/EditorContent';
+import { SwipeableModal } from 'react-native-swipeable-modal';
+import { Button } from '../../../shared/components';
+
 export const DownScreen = ({ route: { params }, navigation }) => {
     const { name, codigo, carrera } = params;
 
@@ -38,6 +42,12 @@ export const DownScreen = ({ route: { params }, navigation }) => {
     const onRefresh = () => {
         initial();
     }
+    const [editModal, setEditModal] = useState(false);
+    const [editData, setEditData] = useState({});
+    const showEditModal = async (data) => {
+        setEditData(data)
+        setEditModal(true)
+    }
 
     return (
         <Container>
@@ -48,7 +58,10 @@ export const DownScreen = ({ route: { params }, navigation }) => {
                     data={state.data}
                     renderItem={(data) => {
                         return (
-                            <CustomCard params={data} status={state.status} reloadList={() => {initial()}} />
+                            <CustomCard params={data} status={state.status} reloadList={() => { initial() }} 
+                            editModal={(data) => {
+                                showEditModal(data)
+                            }}  />
                         )
                     }}
                     keyExtractor={(item, index) => { return index.toString()}}
@@ -71,6 +84,28 @@ export const DownScreen = ({ route: { params }, navigation }) => {
                 />
                 
             }
+            {editModal &&
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={editModal}
+                    onRequestClose={() => {
+                        setEditModal(false)
+                    }}
+                >
+                    <SwipeableModal
+                        closeModal={() => setEditModal(false)}
+                        style={{
+                            backgroundColor: 'rgba(0,0,0,.4)',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Container style={{ backgroundColor: colors.white,}}>
+                        <EditorContent params={editData} closeModal={() => { setEditModal(false) }} reloadList={() => { initial() }} />
+                        </Container>
+                    </SwipeableModal>
+                </Modal>
+            }
         </Container>
     );
 };
@@ -79,8 +114,6 @@ const Container = styled.SafeAreaView`
     height: 100%;
     padding-right: 20px;
     padding-left: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
 `
 const Row = styled.View`
     flex-direction: row;
@@ -88,4 +121,13 @@ const Row = styled.View`
 `
 const Label = styled.Text`
     margin: 3px; 
+`
+const ButtonBox = styled.View`
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+    width: 100%;
+    padding-right: 40px;
+    padding-left: 40px;
+    margin-top: 64px;
 `

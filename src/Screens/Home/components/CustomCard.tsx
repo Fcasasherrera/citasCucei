@@ -10,14 +10,14 @@ import { deleteCite } from '../../../shared/Api/index';
 type CustomCardProps = {
     params,
     reloadList: any;
+    editModal: any;
     status: boolean,
 }
 
 export const CustomCard: React.FC<CustomCardProps> = (
-    { params: { index, item }, reloadList }, 
+    { params: { index, item }, reloadList, editModal }, 
 ) => { 
     const [loading, setLoading] = useState(false);
-    
     const deleteAny = async () => {
         let response = []
         setLoading(true)
@@ -41,7 +41,7 @@ export const CustomCard: React.FC<CustomCardProps> = (
             setLoading(false)
         }
     }
-
+    
     return (
         <ContainerItem key={index}>
             <Row>
@@ -57,10 +57,15 @@ export const CustomCard: React.FC<CustomCardProps> = (
                 <Label>Mes: {item.Mes}</Label>
             </Row>
 
-            <View style={{ alignSelf: "flex-end" }}>
+            <View style={{ flexDirection:'row', alignSelf: "flex-end" }}>
                 <Button isLoading={loading} accent={true} width={'100px'} isActivated={true} onClick={deleteAny}>
                     Borrar
                 </Button>
+                <View style={{marginLeft:10,}}>
+                    <Button isLoading={loading} secondary={true} width={'100px'} isActivated={true} onClick={() => { editModal(item)}}>
+                        Editar
+                    </Button>
+                </View>
             </View>
         </ContainerItem>
                        

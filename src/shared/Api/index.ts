@@ -17,7 +17,7 @@ export const loginUDG = ({codigo, nip}) => {
                     codigo: res.data.split(',')[1],
                     carrera: res.data.split(',')[4],
                 }
-                resolve(response)
+                resolve(response) 
             })
             .catch(err => {
                 reject(err)
@@ -62,6 +62,26 @@ export const deleteCite = ({ month, day, hour, code,}) => {
         axios.get(urlLocal + endpoint)
             .then(res => {
                 resolve(res.data);
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+export const editCite = ({ id, code, dayWeek, month, day, hour }) => {
+    const endpoint = `editarCitas.php?id=${id}&code=${code}&diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}`
+    console.log(urlLocal + endpoint);
+ 
+    return new Promise<String>((resolve, reject) => {
+        axios.get(urlLocal + endpoint)
+            .then(res => {
+                console.log(res.data);
+
+                if (res.data === 0) {
+                    resolve('err');
+                } else {
+                    resolve(res.data)
+                }
             })
             .catch(err => {
                 reject(err)
