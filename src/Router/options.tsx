@@ -1,28 +1,46 @@
 import React from 'react';
 import {StackNavigationOptions} from '@react-navigation/stack';
-import {colors} from 'shared/styles';
-import FIcon from 'react-native-vector-icons/Feather';
+// import FIcon from 'react-native-vector-icons/Feather';
+import { spacings, colors } from '../shared/styles';
+import styled from 'styled-components/native';
+import { DrawerActions } from '@react-navigation/native';
 
-export const commonScreenOptions: StackNavigationOptions = {
+export const commonScreenOptions = ({ navigation }): StackNavigationOptions => ({
   headerTitleAlign: 'center',
+  
+  headerLeftContainerStyle: {
+    paddingHorizontal: spacings.right,
+  },
+  headerRightContainerStyle: {
+    paddingHorizontal: spacings.right,
+  },
   headerTitleStyle: {
-    fontSize: 16,
-    fontWeight: 'normal',
     color: colors.black,
   },
   headerStyle: {
-    elevation: 0,
     backgroundColor: colors.white,
-    shadowRadius: 0,
-    borderBottomWidth: 0,
-    shadowColor: 'transparent',
   },
   headerBackTitle: null,
   headerBackTitleVisible: false,
-  headerBackImage: () => (
-    <FIcon name="arrow-left" size={24} color={colors.black} />
+  headerLeft: () => (
+    <IconContainer onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
+      {/* <FIcon name="menu" size={24} color={colors.primary} /> */}
+      {/* <Label>Menu</Label> */}
+      <ImgIcon source={require('../assets/icons/menu.png')} />
+    </IconContainer>
   ),
-  headerLeftContainerStyle: {
-    paddingLeft: 16,
-  },
-};
+});
+const IconContainer = styled.TouchableOpacity.attrs(props => ({}))`
+  padding: 8px;
+  border-radius: 50px;
+`;
+const ImgIcon = styled.Image`
+    width: 24px;
+    height: 24px;
+    resize-mode: contain;
+`
+const Label = styled.Text`
+    color: #000;
+    margin-top: 5px;
+    margin-bottom: 5px;
+`

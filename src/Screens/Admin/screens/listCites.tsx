@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Modal } from 'react-native';
 import styled from 'styled-components/native';
-import { getCitesCode } from '../../../shared/Api/index';
+import { getCitesFilter } from '../../../shared/Api/index';
 import { timeNumbers, colors } from '../../../shared/styles';
 import Toast from 'react-native-simple-toast';
 import { CustomCard } from '../components/CustomCard';
 import { EditorContent } from '../components/EditorContent';
 import { SwipeableModal } from 'react-native-swipeable-modal';
 import { Button } from '../../../shared/components';
+import CalendarPicker from 'react-native-calendar-picker';
 
-export const DownScreen = ({ route: { params }, navigation }) => {
+export const ListCitesScreen = ({ route: { params }, navigation }) => {
     const { name, codigo, carrera } = params;
-
+    
     const [state, setState] = useState({
         status: true,
         data: [],
+        
     })
+    const onChangeDate = (date) => {
+        let selectedDate = date.toString()
+        setFilterModal(false)
+        let data = {
+            dayWeek: selectedDate.split(' ')[0],
+            day: selectedDate.split(' ')[2], 
+        }
+        initial(data)
+    }
 
     const [loading, setLoading] = useState(false);
 
-    const initial = async () => {
+    const initial = async (params) => {
         let response = []
         setLoading(true)
         try {
-            response = await getCitesCode(codigo);
+            response = await getCitesFilter(params, carrera);
         } catch (error) {
             Toast.show('Error al ejecutar la peticion', Toast.SHORT);
             setLoading(false)
@@ -37,11 +48,13 @@ export const DownScreen = ({ route: { params }, navigation }) => {
         }
     }
     useEffect(() => {
-        initial()
+        initial({})
     }, []);
     const onRefresh = () => {
-        initial();
+        initial({});
     }
+    
+    const [filterModal, setFilterModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
     const [editData, setEditData] = useState({});
     const showEditModal = async (data) => {
@@ -51,6 +64,11 @@ export const DownScreen = ({ route: { params }, navigation }) => {
 
     return (
         <Container>
+            <Row style={{ justifyContent: 'center', backgroundColor: 'white', padding: 16, }}>
+                <Button isLoading={loading} secondary={true} isActivated={true} onClick={() => { setFilterModal(true) }}>
+                    Filtrar fechas
+                </Button>
+            </Row>
             <InternalContainer>
                 {state.data.length > 0 ? 
                     <FlatList
@@ -104,6 +122,41 @@ export const DownScreen = ({ route: { params }, navigation }) => {
                     >
                         <Container style={{ backgroundColor: colors.white,}}>
                         <EditorContent params={editData} closeModal={() => { setEditModal(false) }} reloadList={() => { initial() }} />
+                        </Container>
+                    </SwipeableModal>
+                </Modal>
+            }
+            {filterModal &&
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={filterModal}
+                    onRequestClose={() => {
+                        setFilterModal(false)
+                    }}
+                >
+                    <SwipeableModal
+                        closeModal={() => setFilterModal(false)}
+                        style={{
+                            backgroundColor: 'rgba(0,0,0,.4)',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Container style={{ backgroundColor: colors.white, }}>
+                            <Row style={{ justifyContent: 'center', backgroundColor: 'white', padding: 25, }}>
+                                <CalendarPicker
+                                    onDateChange={(data) => onChangeDate(data)}
+                                    previousTitle="<"
+                                    nextTitle=">"
+                                    selectedDayColor={colors.pink}
+                                    todayBackgroundColor={colors.primary}
+                                />
+                            </Row>
+                            <Row style={{ justifyContent: 'center', backgroundColor: 'white', padding: 25, }}>
+                                <Button isLoading={loading} secondary={true} isActivated={true} onClick={() => { setFilterModal(false); initial({}) }}>
+                                    Borrar Filtros
+                                </Button>
+                            </Row>
                         </Container>
                     </SwipeableModal>
                 </Modal>
