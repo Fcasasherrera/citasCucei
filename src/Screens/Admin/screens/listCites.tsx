@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, Modal } from 'react-native';
+import { FlatList, Modal, View } from 'react-native';
 import styled from 'styled-components/native';
 import { getCitesFilter } from '../../../shared/Api/index';
 import { timeNumbers, colors } from '../../../shared/styles';
@@ -8,22 +8,22 @@ import { CustomCard } from '../components/CustomCard';
 import { EditorContent } from '../components/EditorContent';
 import { SwipeableModal } from 'react-native-swipeable-modal';
 import { Button } from '../../../shared/components';
-import CalendarPicker from 'react-native-calendar-picker';
+import { Picker } from '@react-native-community/picker';
 
 export const ListCitesScreen = ({ route: { params }, navigation }) => {
     const { name, codigo, carrera } = params;
-    
+    const { DAYSWEEK, DAYS } = timeNumbers;
     const [state, setState] = useState({
         status: true,
         data: [],
-        
+        dayWeek: '-',
+        day: '-'
     })
-    const onChangeDate = (date) => {
-        let selectedDate = date.toString()
+    const filterTrigger = () => {
         setFilterModal(false)
         let data = {
-            dayWeek: selectedDate.split(' ')[0],
-            day: selectedDate.split(' ')[2], 
+            dayWeek: state.dayWeek,
+            day: state.day,
         }
         initial(data)
     }
@@ -53,6 +53,11 @@ export const ListCitesScreen = ({ route: { params }, navigation }) => {
     const onRefresh = () => {
         initial({});
     }
+    const reset = () => {
+        setFilterModal(false); 
+        setState({ ...state, dayWeek: '-', day: '-'})
+        initial({})
+    }
     
     const [filterModal, setFilterModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
@@ -61,6 +66,7 @@ export const ListCitesScreen = ({ route: { params }, navigation }) => {
         setEditData(data)
         setEditModal(true)
     }
+    const { Item } = Picker;
 
     return (
         <Container>
@@ -142,18 +148,51 @@ export const ListCitesScreen = ({ route: { params }, navigation }) => {
                             justifyContent: 'center',
                         }}
                     >
-                        <Container style={{ backgroundColor: colors.white, }}>
+                        <Container style={{ backgroundColor: colors.white, justifyContent: 'center', }}>
+                            <Label style={{ textAlign: 'center', fontSize: 24, color: colors.black, marginBottom: 16, }}>
+                                Filtros
+                            </Label>
+                            <Label style={{ textAlign: 'center', fontSize: 16, color: colors.primary }}>
+                                Dias del mes
+                            </Label>
+                            <View style={{ flexDirection: "row", paddingHorizontal: 64, marginTop: -42 }} >
+                                <Picker
+                                    selectedValue={state.day}
+                                    style={{ flex: 1, }}
+                                    onValueChange={(itemValue: any) =>
+                                        setState({ ...state, day: itemValue })
+                                    }>
+                                    {DAYS.map((value, index) => {
+                                        return (
+                                            <Item key={index} label={value.toString()} value={value.toString()} />
+                                        )
+                                    })}
+                                </Picker>
+                            </View>
+                            <Label style={{ textAlign: 'center', fontSize: 16, color: colors.primary }}>
+                                Dias de la semana
+                            </Label>
+                            <View style={{ flexDirection: "row", paddingHorizontal: 64, marginTop: -42 }} >
+                                <Picker
+                                    selectedValue={state.dayWeek}
+                                    style={{ flex: 1, }}
+                                    onValueChange={(itemValue: any) =>
+                                        setState({ ...state, dayWeek: itemValue })
+                                    }>
+                                    {DAYSWEEK.map((value, index) => {
+                                        return (
+                                            <Item key={index} label={value.label.toString()} value={value.value.toString()} />
+                                        )
+                                    })}
+                                </Picker>
+                            </View>
                             <Row style={{ justifyContent: 'center', backgroundColor: 'white', padding: 25, }}>
-                                <CalendarPicker
-                                    onDateChange={(data) => onChangeDate(data)}
-                                    previousTitle="<"
-                                    nextTitle=">"
-                                    selectedDayColor={colors.pink}
-                                    todayBackgroundColor={colors.primary}
-                                />
+                                <Button isLoading={loading} isActivated={true} onClick={filterTrigger}>
+                                    Filtrar
+                                </Button>
                             </Row>
                             <Row style={{ justifyContent: 'center', backgroundColor: 'white', padding: 25, }}>
-                                <Button isLoading={loading} secondary={true} isActivated={true} onClick={() => { setFilterModal(false); initial({}) }}>
+                                <Button isLoading={loading} secondary={true} isActivated={true} onClick={reset}>
                                     Borrar Filtros
                                 </Button>
                             </Row>
@@ -182,13 +221,4 @@ const InternalContainer = styled.View`
     height: 100%;
     padding-right: 20px;
     padding-left: 20px;
-`
-const ButtonBox = styled.View`
-    align-items: center;
-    justify-content: flex-start;
-    display: flex;
-    width: 100%;
-    padding-right: 40px;
-    padding-left: 40px;
-    margin-top: 64px;
 `

@@ -98,10 +98,24 @@ export const getCitesCode = (code) => {
 }
 function returnParams({ dayWeek, day }, carrera) {
     let endpointParams = 'getAllCites.php?'
-    if (dayWeek) {
-        return endpointParams + `carrera=${carrera}&dayWeek=${dayWeek}&day=${day}`
+    if (dayWeek === '-' || dayWeek === undefined) {
+        // que NO hay dia de la semana
+        if (day === '-' || day === undefined) {
+            // que NO hay dia del mes
+            return endpointParams + `carrera=${carrera}`
+        } else {
+            // que hay dia del mes
+            return endpointParams + `carrera=${carrera}&day=${day}`
+        }
     } else {
-        return endpointParams + `carrera=${carrera}`
+        // que hay dia de la semana
+        if (day === '-' || day === undefined) {
+            // que NO hay dia del mes, pero si hay de la semana
+            return endpointParams + `carrera=${carrera}&dayWeek=${dayWeek}`
+        } else {
+            // que hay los dos
+            return endpointParams + `carrera=${carrera}&dayWeek=${dayWeek}&day=${day}`
+        }
     }
 }
 export const getCitesFilter = (params, carrera) => {

@@ -221,7 +221,7 @@ const Container = styled.View`
     padding-right: 20px;
     padding-left: 20px;
 `
-const Label = styled.Text`
+export const Label = styled.Text`
     color: #000;
     margin-top: 5px;
     margin-bottom: 5px;
