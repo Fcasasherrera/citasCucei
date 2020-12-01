@@ -40,6 +40,7 @@ export const EditorContent: React.FC<EditorContentProps> = (
             month: state.selectedStartDate.toString().split(' ')[1],
             day: state.selectedStartDate.toString().split(' ')[2],
             hour: state.hours + ':' + state.minutes,
+            admin: '1',
             //hour: state.hours + ':' + state.minutes + ' ' + state.type,  //with am or pm
         }
         try {

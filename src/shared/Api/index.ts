@@ -131,8 +131,14 @@ export const getCitesFilter = (params, carrera) => {
             })
     })
 }
-export const deleteCite = ({ month, day, hour, code,}) => {
-    const endpoint = `bajasCitas.php?month=${month}&day=${day}&hour=${hour}&code=${code}`
+export const deleteCite = ({ month, day, hour, code, admin }) => {
+    let endpoint = ``
+    if (admin === '1') {
+        endpoint = `bajasCitas.php?month=${month}&day=${day}&hour=${hour}&code=${code}&admin=1`
+    } else {
+        endpoint = `bajasCitas.php?month=${month}&day=${day}&hour=${hour}&code=${code}`
+    }
+    console.log(urlLocal + endpoint);
     return new Promise<[]>((resolve, reject) => {
         axios.get(urlLocal + endpoint)
             .then(res => {
@@ -143,8 +149,13 @@ export const deleteCite = ({ month, day, hour, code,}) => {
             })
     })
 }
-export const editCite = ({ id, code, dayWeek, month, day, hour }) => {
-    const endpoint = `editarCitas.php?id=${id}&code=${code}&diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}`
+export const editCite = ({ id, code, dayWeek, month, day, hour, admin }) => {
+    let endpoint = ``
+    if (admin === '1') {
+        endpoint = `editarCitas.php?id=${id}&code=${code}&diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}&admin=1`
+    } else {
+        endpoint = `editarCitas.php?id=${id}&code=${code}&diasemana=${dayWeek}&mes=${month}&dia=${day}&hora=${hour}`
+    }
     console.log(urlLocal + endpoint);
  
     return new Promise<String>((resolve, reject) => {

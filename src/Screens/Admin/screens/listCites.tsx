@@ -44,7 +44,8 @@ export const ListCitesScreen = ({ route: { params }, navigation }) => {
             setLoading(false)
         } else {
             setLoading(false)
-            setState({ ...state, data: response })
+            const result = response.filter(word => word.status !== 'deleted');
+            setState({ ...state, data: result })
         }
     }
     useEffect(() => {
@@ -83,7 +84,7 @@ export const ListCitesScreen = ({ route: { params }, navigation }) => {
                         data={state.data}
                         renderItem={(data) => {
                             return (
-                                <CustomCard params={data} status={state.status} reloadList={() => { initial() }} 
+                                <CustomCard params={data} status={state.status} reloadList={() => { initial({}) }} 
                                 editModal={(data) => {
                                     showEditModal(data)
                                 }}  />
@@ -127,7 +128,7 @@ export const ListCitesScreen = ({ route: { params }, navigation }) => {
                         }}
                     >
                         <Container style={{ backgroundColor: colors.white,}}>
-                        <EditorContent params={editData} closeModal={() => { setEditModal(false) }} reloadList={() => { initial() }} />
+                        <EditorContent params={editData} closeModal={() => { setEditModal(false) }} reloadList={() => { initial({}) }} />
                         </Container>
                     </SwipeableModal>
                 </Modal>

@@ -16,8 +16,8 @@ export const LoginScreen = ({ navigation }) => {
         status: false,
     })
     const [stateAdmin, setStateAdmin] = useState({
-        user: '',
-        pass: '',
+        user: 'admin',
+        pass: 'admin',
         status: false,
     })
     const [stateRegister, setStateRegister] = useState({

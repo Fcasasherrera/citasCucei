@@ -19,7 +19,7 @@ export const Thumbnail: React.FC<ButtonProps> = ({
 }) => {
     return (
         <ThumbnailButton>
-            <Img source={{ uri: 'https://lh3.googleusercontent.com/proxy/zzudlpqsSTVtxL5roDac8-KcniSn28jYn7BzUrRRfKTEDq2i3p2fBr_PSymLeMuZTOfsfMTrhutnBN3AhFS-sfWoibVIfEZqn2Kxe3RwKZ5kQz-8cgpPVkkmIGcnhJjoxy0hAo0GfIz4-24kUE8trZ5LxdeJ8Y3q39_kPcs' }}
+            <Img source={{ uri: 'http://www.web.valles.udg.mx/sites/default/files/49159786_10156557180466542_4776876890197590016_n.jpg' }}
                 resizeMode='cover' />
         </ThumbnailButton>
     )

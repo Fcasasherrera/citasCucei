@@ -17,6 +17,7 @@ type CustomCardProps = {
 export const CustomCard: React.FC<CustomCardProps> = (
     { params: { index, item }, reloadList, editModal }, 
 ) => { 
+    console.log(item.status);
     const [loading, setLoading] = useState(false);
     const deleteAny = async () => {
         let response = []
@@ -26,6 +27,7 @@ export const CustomCard: React.FC<CustomCardProps> = (
             day: item.Dia,
             hour: item.Hora,
             code: item.Codigo,
+            admin: '0',
         }
         
         try {
@@ -43,7 +45,7 @@ export const CustomCard: React.FC<CustomCardProps> = (
     }
     
     return (
-        <ContainerItem key={index}>
+        <ContainerItem key={index} status={item.status}>
             <Row>
                 <Label>Carrera: {item.Carrera}</Label>
                 <Label>Codigo: {item.Codigo}</Label>
@@ -82,14 +84,17 @@ const Row = styled.View`
     flex-direction: row;
     justify-content: space-between;
 `
-const ContainerItem = styled.View`
+type StyleProps = {
+    status?: string;
+};
+const ContainerItem = styled.View<StyleProps>`
     ${ShadowStyles}
     margin-top: 8px;
     margin-bottom: 8px;
     border-radius: 16px;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: ${colors.white};
+    background-color: ${props => props.status === 'deleted' ? colors.error : props.status === 'edited' ? colors.accentLight : colors.white };
     width: 100%;
     padding-right: 20px;
     padding-left: 20px;
