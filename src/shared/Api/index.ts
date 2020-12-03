@@ -174,3 +174,19 @@ export const editCite = ({ id, code, dayWeek, month, day, hour, admin }) => {
             })
     })
 }
+export const sendPush = () => {
+    const endpoint = `push.php`
+    
+    console.log(urlLocal + endpoint);
+
+    return new Promise<String>((resolve, reject) => {
+        axios.get(urlLocal + endpoint)
+            .then(res => {
+                console.log(res.data);
+                resolve('true');
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}

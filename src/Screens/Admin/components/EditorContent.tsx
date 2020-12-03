@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import styled from 'styled-components/native';
-import { editCite } from '../../../shared/Api/index';
+import { editCite, sendPush } from '../../../shared/Api/index';
 import CalendarPicker from 'react-native-calendar-picker';
 import { Picker } from '@react-native-community/picker';
 import { colors } from '../../../shared/styles';
@@ -45,6 +45,7 @@ export const EditorContent: React.FC<EditorContentProps> = (
         }
         try {
             response = await editCite(data);
+            await sendPush();
         } catch (error) {
             Toast.show('Error al ejecutar la peticion', Toast.SHORT);
             setLoading(false)

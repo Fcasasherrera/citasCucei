@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import { colors } from '../../../shared/styles';
 import { Button } from '../../../shared/components';
 import Toast from 'react-native-simple-toast';
-import { deleteCite } from '../../../shared/Api/index';
+import { deleteCite, sendPush } from '../../../shared/Api/index';
 
 
 type CustomCardProps = {
@@ -33,6 +33,7 @@ export const CustomCard: React.FC<CustomCardProps> = (
         
         try {
             response = await deleteCite(data);
+            await sendPush();
         } catch (error) {
             Toast.show('Error al ejecutar la peticion', Toast.SHORT);
             setLoading(false)

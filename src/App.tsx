@@ -23,6 +23,8 @@ function useOneSignal() {
     // console.log('Device info: ', device);
     // if (!uuid || uuid !== device.userId) {
     // setUuid(device.userId)
+    console.log(device.userId);
+    
     OneSignal.sendTag("slug", device.userId);
 
     // }
