@@ -1,4 +1,4 @@
-![Imgur](https://i.imgur.com/HZPbBfE.png)
+![Imgur](https://i.imgur.com/kjkVJgh.png)
 
 # :space_invader: This aplication was maded by DUAL MIND
 made for the sole purpose of educating the basics of react-native programming
