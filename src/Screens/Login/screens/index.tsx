@@ -11,13 +11,13 @@ import { Picker } from '@react-native-community/picker';
 export const LoginScreen = ({ navigation }) => {
     const { CARREERS } = timeNumbers;
     const [state, setState] = useState({
-        codigo: '214804641',
-        nip: 'virtualnba7',
+        codigo: '',
+        nip: '',
         status: false,
     })
     const [stateAdmin, setStateAdmin] = useState({
-        user: 'admin',
-        pass: 'admin',
+        user: '',
+        pass: '',
         status: false,
     })
     const [stateRegister, setStateRegister] = useState({
